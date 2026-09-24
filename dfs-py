@@ -1,0 +1,22 @@
+
+# Algoritmo de busqueda en profundidad para grafos con matriz de adyacencia
+def dfs(matriz, nodo_inicio):
+    visitados = set() #Nodos visitados
+    pila = [nodo_inicio]  # Estructura LIFO 
+    orden_visita = [] # Orden de los nodos
+
+    while pila: # Mientras la pila no este vacia
+        nodo_actual = pila.pop()  
+
+        if nodo_actual not in visitados: 
+            visitados.add(nodo_actual)
+            orden_visita.append(nodo_actual)
+
+            # Agregamos los vecinos a la pila
+            for adyacente in range(len(matriz) - 1, -1, -1):
+                # Si existe una arista  y el nodo adyacente no se ha visitado
+                if matriz[nodo_actual][adyacente] == 1 and adyacente not in visitados:
+                    # Apilar el nodo
+                    pila.append(adyacente)
+
+    return orden_visita

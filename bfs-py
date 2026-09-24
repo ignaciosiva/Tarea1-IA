@@ -1,0 +1,21 @@
+from collections import deque
+#Algoritmo de busqueda en anchura aplicado para grafos con matriz de adyacencia
+def bfs_matriz(matriz, nodo_inicio):
+    
+    
+    visitados = {nodo_inicio}       # Conjunto de nodos visitados
+    cola = deque([nodo_inicio])      # Cola deque para aplicar FIFO
+    orden_visita = []               # Lista para almacenar nodos visitados 
+
+    while cola:
+        nodo_actual = cola.popleft()
+        orden_visita.append(nodo_actual)
+
+        # Iteramos sobre todos los posibles nodos adyacentes en la matriz
+        for adyacente in range(len(matriz)):
+            # Si hay conexión y no se a visitado
+            if matriz[nodo_actual][adyacente] == 1 and adyacente not in visitados:
+                visitados.add(adyacente)
+                cola.append(adyacente)
+
+    return orden_visita
