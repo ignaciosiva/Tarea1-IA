@@ -14,6 +14,8 @@ def _rebuild_path(came_from, current):
         current = came_from[current]
     path.reverse()
     return path
+
+
 # Funcion que encuentra los posibles vecinos
 def neighbors(current, grid):
 
@@ -32,17 +34,20 @@ def neighbors(current, grid):
                 
     return valid
 
+
+def get_goal(grid):
+    for r in range(len(grid)):
+        for c in range(len(grid[0])):
+            if grid[r][c] == 2:
+                return (r, c)
+    return None
+
 def greedy_best_first_path(start, grid):
     if grid[start[0]][start[1]] == 2:
         return [start]
         
     counter = 0
-    goal = None
-    for r in range(len(grid)):
-        for c in range(len(grid[0])):
-            if grid[r][c] == 2:
-                goal = (r, c)
-                break
+    goal = get_goal(grid)
          
     frontier = [(manhattan(start, goal), counter, start)] # lista ordenada segun la menor distancia via heuristica manhattan 
     came_from = {start: None} #Diccionario que guarda el camino recorrido 
@@ -61,5 +66,37 @@ def greedy_best_first_path(start, grid):
                 came_from[nxt] = current
                 counter += 1
                 heapq.heappush(frontier, (manhattan(nxt, goal), counter, nxt))
+                
+    return None
+
+def a_star_path(start, grid):
+    
+    if grid[start[0]][start[1]] == 2:
+        return [start]
+        
+    goal = get_goal(grid)
+        
+    counter = 0
+    start_h = manhattan(start, goal)
+    frontier = [(start_h, counter, start)]
+    
+    came_from = {start: None}
+    cost = {start: 0}  #costo acumulado
+    
+    while frontier:
+        _, _, current = heapq.heappop(frontier)
+        
+        if grid[current[0]][current[1]] == 2:
+            return _rebuild_path(came_from, current)
+            
+        for nxt in neighbors(current, grid):
+            new_cost = cost[current] + 1 # SUmamos uno al costo acumludo por cada casilla
+            
+            if nxt not in cost or new_cost < cost[nxt]:
+                cost[nxt] = new_cost
+                counter += 1
+                f_score = new_cost + manhattan(nxt, goal)
+                heapq.heappush(frontier, (f_score, counter, nxt))
+                came_from[nxt] = current
                 
     return None
