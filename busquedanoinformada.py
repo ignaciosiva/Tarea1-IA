@@ -4,8 +4,6 @@ from auxiliares import get_goal, neighbors,_rebuild_path
 def bfs_path(start, grid):
     if grid[start[0]][start[1]] == 2:
         return [start]
-        
-    goal = get_goal(grid)
 
     visitados = {start}         
     cola = deque([start])        # Cola deque para aplicar FIFO
@@ -14,7 +12,7 @@ def bfs_path(start, grid):
     while cola:
         nodo_actual = cola.popleft()
 
-        if nodo_actual == goal:
+        if nodo_actual == 2:
             return _rebuild_path(came_from, nodo_actual)
 
         # Iteramos sobre nodos vecinos
@@ -30,8 +28,6 @@ def bfs_path(start, grid):
 def dfs_path(start, grid):
     if grid[start[0]][start[1]] == 2:
         return [start]
-        
-    goal = get_goal(grid)
 
     visitados = set()            
     pila = [start]               # Pila para aplicar LIFO
@@ -39,7 +35,7 @@ def dfs_path(start, grid):
 
     while pila:                  # Mientras la pila no este vacia
         nodo_actual = pila.pop()  
-        if nodo_actual == goal:
+        if nodo_actual == 2:
             return _rebuild_path(came_from, nodo_actual)
 
         if nodo_actual not in visitados: 

@@ -1,0 +1,1 @@
+from auxiliares import neighbors, get_goal, _rebuild_path
