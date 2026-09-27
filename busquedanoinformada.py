@@ -1,46 +1,56 @@
 from collections import deque
+from auxiliares import get_goal, neighbors,_rebuild_path
 
-#Algoritmo de busqueda en anchura aplicado para grafos con matriz de adyacencia
-def bfs_matriz(matriz, nodo_inicio):
-    
-    
-    visitados = {nodo_inicio}       # Conjunto de nodos visitados
-    cola = deque([nodo_inicio])      # Cola deque para aplicar FIFO
-    orden_visita = []               # Lista para almacenar nodos visitados 
+def bfs_path(start, grid):
+    if grid[start[0]][start[1]] == 2:
+        return [start]
+        
+    goal = get_goal(grid)
+
+    visitados = {start}         
+    cola = deque([start])        # Cola deque para aplicar FIFO
+    came_from = {start: None}    
 
     while cola:
         nodo_actual = cola.popleft()
-        orden_visita.append(nodo_actual)
 
-        # Iteramos sobre todos los posibles nodos adyacentes en la matriz
-        for adyacente in range(len(matriz)):
-            # Si hay conexión y no se a visitado
-            if matriz[nodo_actual][adyacente] == 1 and adyacente not in visitados:
+        if nodo_actual == goal:
+            return _rebuild_path(came_from, nodo_actual)
+
+        # Iteramos sobre nodos vecinos
+        for adyacente in neighbors(nodo_actual, grid):
+            # Si no se ha visitado
+            if adyacente not in visitados:
                 visitados.add(adyacente)
+                came_from[adyacente] = nodo_actual
                 cola.append(adyacente)
 
-    return orden_visita
+    return None
 
+def dfs_path(start, grid):
+    if grid[start[0]][start[1]] == 2:
+        return [start]
+        
+    goal = get_goal(grid)
 
+    visitados = set()            
+    pila = [start]               # Pila para aplicar LIFO
+    came_from = {start: None}    
 
-# Algoritmo de busqueda en profundidad para grafos con matriz de adyacencia
-def dfs(matriz, nodo_inicio):
-    visitados = set() #Nodos visitados
-    pila = [nodo_inicio]  # Estructura LIFO 
-    orden_visita = [] # Orden de los nodos
-
-    while pila: # Mientras la pila no este vacia
+    while pila:                  # Mientras la pila no este vacia
         nodo_actual = pila.pop()  
+        if nodo_actual == goal:
+            return _rebuild_path(came_from, nodo_actual)
 
         if nodo_actual not in visitados: 
             visitados.add(nodo_actual)
-            orden_visita.append(nodo_actual)
 
             # Agregamos los vecinos a la pila
-            for adyacente in range(len(matriz) - 1, -1, -1):
-                # Si existe una arista  y el nodo adyacente no se ha visitado
-                if matriz[nodo_actual][adyacente] == 1 and adyacente not in visitados:
+            for adyacente in neighbors(nodo_actual, grid):
+                # Si el nodo adyacente no se ha visitado
+                if adyacente not in visitados and adyacente not in came_from:
                     # Apilar el nodo
+                    came_from[adyacente] = nodo_actual
                     pila.append(adyacente)
 
-    return orden_visita
+    return None
