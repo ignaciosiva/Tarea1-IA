@@ -12,7 +12,7 @@ def bfs_path(start, grid):
     while cola:
         nodo_actual = cola.popleft()
 
-        if nodo_actual == 2:
+        if grid[nodo_actual[0]][nodo_actual[1]] == 2:
             return _rebuild_path(came_from, nodo_actual)
 
         # Iteramos sobre nodos vecinos
@@ -35,7 +35,7 @@ def dfs_path(start, grid):
 
     while pila:                  # Mientras la pila no este vacia
         nodo_actual = pila.pop()  
-        if nodo_actual == 2:
+        if grid[nodo_actual[0]][nodo_actual[1]] == 2:
             return _rebuild_path(came_from, nodo_actual)
 
         if nodo_actual not in visitados: 

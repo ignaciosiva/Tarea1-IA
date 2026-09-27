@@ -26,13 +26,9 @@ class simulador:
         for r, c in propagar:
             self.grid[r][c] = 3
 
-    def cuello_botella(self, celda, max=40):
-
-        agentes = self.agentes.count(celda)
-        
-        if agentes >= max:
-            return True
-        return False
+    def cuello_botella(self, celda, max_capacidad=40):
+        agentes_en_esa_celda = self.agentes.count(celda)
+        return agentes_en_esa_celda >= max_capacidad
 
     def ejecutar_turno(self, algoritmo):
         self.turno_actual += 1

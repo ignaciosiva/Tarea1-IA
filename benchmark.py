@@ -1,7 +1,7 @@
 import statistics
-import simulador
+from simulador import simulador
 
-def ejecutar_benchmarking_oficial(algoritmo, grid, start, number_people, k_turns, iteraciones=100):
+def ejecutar_benchmarking_oficial(algoritmo, grid, start, number_people, k_turns, iteraciones):
     # Debemos registrar la tase de supervivencia y el turno de salida del ultimo superviviente para las estadisticas
     tasas_supervivencia = []
     turnos_ultimos_sobrevivientes = []
