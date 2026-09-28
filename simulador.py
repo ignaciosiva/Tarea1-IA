@@ -46,6 +46,7 @@ class simulador:
                         busquedainformada.COSTOS_AGENTES[(r, c)] = (num_agentes / 2.0) + 1.0
 
         activos = []
+        destinos_ocupados = {}
         
         for agente in self.agentes:
             r, c = agente
@@ -60,16 +61,22 @@ class simulador:
                 siguiente_paso = camino[1]
                 nr, nc = siguiente_paso
                 
-            
                 if self.grid[nr][nc] == 3:
                     self.bajas.append(agente)  # Murio
                 elif self.grid[nr][nc] == 2:
                     self.sobrevivientes.append(siguiente_paso)  # EScapo
-                elif self.cuello_botella(siguiente_paso, max_capacidad=40):
-                    # verificamos cuello de botella
-                    activos.append(agente)
                 else:
-                    activos.append(siguiente_paso)
+                    
+                    agentes_celda = self.agentes.count(siguiente_paso)
+                    agentes_transitorios = destinos_ocupados.get(siguiente_paso, 0)
+                    total_proyectado = agentes_celda + agentes_transitorios
+                    
+                    if total_proyectado >= 40:  
+                        activos.append(agente)
+                    else:
+                        # Si hay espacio, registramos que este agente ocupará la celda y avanzamos
+                        destinos_ocupados[siguiente_paso] = agentes_transitorios + 1
+                        activos.append(siguiente_paso)
             else:
                 # Espera
                 activos.append(agente)
