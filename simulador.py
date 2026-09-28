@@ -1,3 +1,4 @@
+import busquedainformada
 class simulador:
     def __init__(self, grid, start, number_people, k_turns):
         
@@ -36,6 +37,14 @@ class simulador:
         if self.turno_actual % self.k == 0:
             self.propagar_fuego()
             
+        busquedainformada.COSTOS_AGENTES.clear()
+        for r in range(len(self.grid)):
+            for c in range(len(self.grid[0])):
+                if self.grid[r][c] == 1:
+                    num_agentes = self.agentes.count((r, c))
+                    if num_agentes > 0:
+                        busquedainformada.COSTOS_AGENTES[(r, c)] = (num_agentes / 2.0) + 1.0
+
         activos = []
         
         for agente in self.agentes:
@@ -45,7 +54,6 @@ class simulador:
                 self.bajas.append(agente)
                 continue
                 
-            # B) Calcular la ruta con el algoritmo (Greedy o A*)
             camino = algoritmo(agente, self.grid)
             
             if camino and len(camino) > 1:

@@ -7,6 +7,8 @@ from auxiliares import neighbors, _rebuild_path, get_goal
 def manhattan(a, b):
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
+COSTOS_AGENTES = {}
+
 
 def greedy_best_first_path(start, grid):
     if grid[start[0]][start[1]] == 2:
@@ -56,7 +58,14 @@ def a_star_path(start, grid):
             return _rebuild_path(came_from, current)
             
         for nxt in neighbors(current, grid):
-            new_cost = cost[current] + 1 # Sumamos uno al costo acumludo por cada casilla
+            nr, nc = nxt
+            
+            if grid[nr][nc] == 2:
+                costo_transito = 1.0
+            else:
+                costo_transito = COSTOS_AGENTES.get(nxt, 1.0)
+                
+            new_cost = cost[current] + costo_transito
             
             if nxt not in cost or new_cost < cost[nxt]:
                 cost[nxt] = new_cost
