@@ -3,6 +3,7 @@ from simulador import simulador
 from benchmark import ejecutar_benchmarking_oficial
 from busquedainformada import a_star_path, greedy_best_first_path
 from busquedanoinformada import bfs_path, dfs_path
+from genetico import genetic_path
 
 
 
@@ -29,6 +30,7 @@ if __name__ == "__main__":
         "Greedy Best-First": greedy_best_first_path,
         "BFS": bfs_path,
         "DFS": dfs_path,
+        "Genetico": genetic_path
     }
 
     print("="*50)
